@@ -1,0 +1,44 @@
+borg:
+  # clients need to know where they are supposed to push backup to
+  archive_base: ssh://borguser@backuphost.example.org/local/dir/on/backup/host
+  # the master needs to know where the repos are located
+  master_archive_base: /local/dir/on/backup/host
+  # if unset, no passphrase will be used
+  passphrase: abc
+  # exclude paths and pattern from borg create
+  # on the master, make sure to exclude the master_archive_base by including it
+  # in this list
+  exclude:
+   - /path/to/ignore
+   - /another/path
+   - '/tmp/*' # pattern
+  # the last part of the repo name (usually unter /srv/borg-repos)
+  # if unset, $HOSTNAME will be used
+  reponame: host2
+
+  # configure for master
+  master:
+    # the user for which ssh keys are installed and which runs `borg server` as
+    # receiver. Required.
+    user: borg
+    # all repos will be created if not present
+    repos:
+        # reponame will be appended to borg:archive_base
+	# required
+      - reponame: keket
+        # the repo will be initialised using this passphrase (via -e switch)
+        # Default if not set: 'none'
+        passphrase: 'foobar'
+      - pubkeys:
+        - pubkey: minion_ssh_pubkey_here
+          # comment is optional
+          comment: root@minion1
+          # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
+          # docs). Defaults to ssh-ed25519
+          enc: ssh-ed25519
+        - pubkey: another_minion_ssh_pubkey_here
+          # comment is optional
+          # comment: root@minion2
+          # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
+          # docs). Defaults to ssh-ed25519
+          enc: ssh-rsa
