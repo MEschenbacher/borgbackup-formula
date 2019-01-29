@@ -1,3 +1,6 @@
+include:
+  - borg.init
+
 create user for borgbackup:
   user.present:
     - name: {{salt.pillar.get('borg:master:user')}} 

@@ -1,6 +1,5 @@
-borgbackup package:
-  pkg.installed:
-    - name: borgbackup
+include:
+  - borg.init
 
 cronic package:
   pkg.installed:
