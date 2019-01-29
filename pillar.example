@@ -24,7 +24,7 @@ borg:
     # all repos will be created if not present
     repos:
         # reponame will be appended to borg:archive_base
-	# required
+        # required
       - reponame: keket
         # the repo will be initialised using this passphrase (via -e switch)
         # Default if not set: 'none'

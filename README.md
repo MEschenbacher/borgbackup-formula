@@ -10,7 +10,7 @@ host via ssh.
 # Requirements
 
  - cron
- - cronic
+ - cronic (will be installed automatically)
 
 # Installation
 
@@ -22,7 +22,8 @@ Configuration is done via pillar. See `example.pillar` for examples.
 
 # States
 
-  - `borg.backup`
-    Installs borgbackup, sets up `borgbackup.sh` and `borgcheck.sh`
-  - borg.master
-    Installs borgbackup, sets up repositories and sets up `authorized_keys`
+  - `borg.backup` Installs borgbackup, sets up `borgbackup.sh` and
+    `borgcheck.sh`. **Important**: Run `/root/borgbackup.sh` once manually
+    because ssh needs to verify the host and asks you to accept the hostkey.
+  - `borg.master` Installs borgbackup, sets up repositories and sets up
+    `authorized_keys`
