@@ -7,9 +7,9 @@ borg:
   # on the master, make sure to exclude the master_archive_base by including it
   # in this list
   exclude:
-   - /path/to/ignore
-   - /another/path
-   - '/tmp/*' # pattern
+    - /path/to/ignore
+    - /another/path
+    - '/tmp/*' # pattern
   # the last part of the repo name (usually unter /srv/borg-repos)
   # if unset, $HOSTNAME will be used
   reponame: host2
@@ -24,21 +24,22 @@ borg:
     # all repos will be created if not present
     repos:
         # reponame will be appended to borg:archive_base
+        # must be equal to the minion host borg:reponame value
         # required
-      - reponame: keket
+      - reponame: host1
         # the repo will be initialised using this passphrase (via -e switch)
         # Default if not set: 'none'
-        passphrase: 'foobar'
-      - pubkeys:
-        - pubkey: minion_ssh_pubkey_here
-          # comment is optional
-          comment: root@minion1
-          # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
-          # docs). Defaults to ssh-ed25519
-          enc: ssh-ed25519
-        - pubkey: another_minion_ssh_pubkey_here
-          # comment is optional
-          # comment: root@minion2
-          # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
-          # docs). Defaults to ssh-ed25519
-          enc: ssh-rsa
+        passphrase: foobar
+        pubkeys:
+          - pubkey: minion_ssh_pubkey_here
+            # comment is optional
+            comment: root@minion1
+            # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
+            # docs). Defaults to ssh-ed25519
+            enc: ssh-ed25519
+          - pubkey: another_minion_ssh_pubkey_here
+            # comment is optional
+            # comment: root@minion2
+            # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
+            # docs). Defaults to ssh-ed25519
+            enc: ssh-rsa
