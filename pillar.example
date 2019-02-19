@@ -1,6 +1,8 @@
 borg:
   # clients need to know where they are supposed to push backup to
   archive_base: ssh://borguser@backuphost.example.org/local/dir/on/backup/host
+  # use your own archive naming pattern. Default is {hostname}-{now}
+  archive_name: '{hostname}-{now}'
   # if unset, no passphrase will be used
   passphrase: abc
   # exclude paths and pattern from borg create
