@@ -19,7 +19,9 @@ borg backup key for repo {{entry.get('reponame')}} and user {{pubkeyentry.get('c
     - name: {{pubkeyentry.get('pubkey')}}
     - user: {{salt.pillar.get('borg:master:user')}}
     - enc: {{pubkeyentry.get('enc', 'ssh-ed25519')}}
-    - comment: {{pubkeyentry.get('comment', '')}}
+    {% if pubkeyentry.get('comment') %}
+    - comment: {{pubkeyentry.get('comment')}}
+    {% endif %}
     - options:
       - command="cd {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}; borg serve --append-only --restrict-to-path {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}"
       - no-port-forwarding
