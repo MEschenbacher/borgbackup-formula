@@ -1,0 +1,42 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+borg:
+  pkg: borgbackup
+  cronic_pkg: cronic
+  cron_command: 'sleep ${RANDOM:0:2}m ; cronic /root/borgbackup.sh'
+  cron_minute: 5
+  cron_hour: 4
+  cron_dayweek: 1-6
+  cron_enabled: True
+  cron_check_command: 'sleep ${RANDOM:0:2}m; cronic /root/borgbackup.sh; cronic /root/borgcheck.sh'
+  cron_check_minute: 5
+  cron_check_hour: 4
+  # sunday
+  cron_check_dayweek: 0
+  cron_check_enabled: True
+  # the default list backup directories
+  # include / but exclude directories which are not neccessary
+  default_include:
+    - /
+  default_exclude:
+    - /bin
+    - /boot
+    - /dev
+    - /lib
+    - /lib64
+    - /mnt
+    - /proc
+    - /run
+    - /sbin
+    - /sys
+    - /tmp
+    - /usr/lib
+    - /usr/share
+    - /usr/bin
+    - /usr/sbin
+    - /usr/include
+    - '/**/.ccache'
+    - /var/cache
+    - /var/tmp
+  check:
+    last: 3

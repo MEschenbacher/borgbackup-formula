@@ -1,9 +1,7 @@
+{% from "borg/map.jinja" import borg with context %}
+
 include:
   - borg.init
-
-cronic package:
-  pkg.installed:
-    - name: cronic
 
 /root/borgbackup.sh:
   file.managed:
@@ -13,33 +11,18 @@ cronic package:
     - group: root
     - mode: 700 # script includes a password
 
-/root/borgcheck.sh:
-  file.managed:
-    - source: salt://borg/files/borgcheck.sh
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 700 # script includes a password
-
-default shell for cron /bin/bash:
-  cron.env_present:
-    - user: root
-    - name: SHELL
-    - value: /bin/bash
-
-cronjob for borg:
+{% if borg.cron_enabled %}
+borg-backup-cron:
   cron.present:
     - identifier: borgbackup
-    - name: sleep ${RANDOM:0:2}m ; cronic /root/borgbackup.sh
+    - name: {{ borg.cron_command }}
     - user: root
-    - hour: 4
-    - minute: 5
-
-cronjob for borgcheck:
-  cron.present:
-    - identifier: borgcheck
-    - name: sleep ${RANDOM:0:2}m ; cronic /root/borgcheck.sh
-    - user: root
-    - hour: 5
-    - minute: 5
-    - dayweek: 0 # sunday
+    - minute: {{ borg.cron_minute }}
+    - hour: {{ borg.cron_hour }}
+    - dayweek: {{ borg.cron_dayweek }}
+    - comment: Create a borg backup
+{% else %}
+disable-borg-backup-cron:
+  cron.absent:
+    - identifier: borgbackup
+{% endif %}

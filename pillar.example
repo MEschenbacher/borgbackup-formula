@@ -16,6 +16,11 @@ borg:
   # if unset, $HOSTNAME will be used
   reponame: host2
 
+  # configure borg repo integrity check
+  check:
+    # check last three snapshots
+    last: 3
+
   # configure for master
   master:
     # the user for which ssh keys are installed and which runs `borg server` as
@@ -48,3 +53,7 @@ borg:
           - pubkey: yet_another_minion_ssh_pubkey_here
             enc: ssh-rsa
             delete: True
+  # see borg/defaults.yaml for full documentation
+  lookup:
+    pkg: borgbackup
+    cronic_pkg: cronic
