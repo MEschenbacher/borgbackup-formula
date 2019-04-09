@@ -3,12 +3,12 @@
 borg:
   pkg: borgbackup
   cronic_pkg: cronic
-  cron_command: 'sleep ${RANDOM:0:2}m ; cronic /root/borgbackup.sh'
+  cron_command: bash -c 'sleep ${RANDOM:0:2}m ; cronic /root/borgbackup.sh'
   cron_minute: 5
   cron_hour: 4
   cron_dayweek: 1-6
   cron_enabled: True
-  cron_check_command: 'sleep ${RANDOM:0:2}m; cronic /root/borgbackup.sh; cronic /root/borgcheck.sh'
+  cron_check_command: bash -c 'sleep ${RANDOM:0:2}m; cronic /root/borgbackup.sh; cronic /root/borgcheck.sh'
   cron_check_minute: 5
   cron_check_hour: 4
   # sunday
