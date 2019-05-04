@@ -45,3 +45,6 @@ borg:
             # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
             # docs). Defaults to ssh-ed25519
             enc: ssh-rsa
+          - pubkey: yet_another_minion_ssh_pubkey_here
+            enc: ssh-rsa
+            delete: True

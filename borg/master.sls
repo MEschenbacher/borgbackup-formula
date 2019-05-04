@@ -14,8 +14,13 @@ create directory for borgbackup:
 
 {% for entry in salt.pillar.get('borg:master:repos', []) %}
 {% for pubkeyentry in entry.get('pubkeys', []) %}
-borg backup key for repo {{entry.get('reponame')}} and user {{pubkeyentry.get('comment', pubkeyentry.get('pubkey'))}}:
+{% if pubkeyentry.get('delete', False) %}
+remove borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}} and user {{salt.pillar.get('borg:master:user')}}:
+  ssh_auth.absent:
+{% else %}
+borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}} and user {{salt.pillar.get('borg:master:user')}}:
   ssh_auth.present:
+{% endif %}
     - name: {{pubkeyentry.get('pubkey')}}
     - user: {{salt.pillar.get('borg:master:user')}}
     - enc: {{pubkeyentry.get('enc', 'ssh-ed25519')}}
