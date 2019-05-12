@@ -1,43 +1,54 @@
 borg:
+
   # clients need to know where they are supposed to push backup to
-  # path to folder without the actual repository folder
+  # path to folder without the actual repository folder (e.g. /srv/borg-repos)
   archive_base: ssh://borguser@backuphost.example.org/local/dir/on/backup/host
-  # use your own archive naming pattern. Default is {hostname}-{now}
+
+  # the last part of the repo name
+  # if unset, $HOSTNAME will be used
+  reponame: client-host
+
+  # use your own archive naming pattern.
+  # if unset, {hostname}-{now} will be used (which will be expanded by borg)
   archive_name: '{hostname}-{now}'
+
   # if unset, no passphrase will be used
   passphrase: abc
+
   # exclude paths and pattern from borg create
   # on the master, make sure to exclude the master_archive_base by including it
   # in this list
+  # Attention: by default, borg/defaults.yaml already includes a default_exclude list and a
+  # default_include list which backs up / but excludes a few directories e.g. /dev /proc /sys
+  # /tmp etc. look at them and verify correctness
   exclude:
     - /path/to/ignore
     - /another/path
     - '/tmp/*' # pattern
-  # the last part of the repo name (usually unter /srv/borg-repos)
-  # if unset, $HOSTNAME will be used
-  reponame: host2
-
-  # configure borg repo integrity check
-  check:
-    # check last three snapshots
-    last: 3
 
   # configure for master
   master:
+
     # the user for which ssh keys are installed and which runs `borg serve` as
     # receiver. Required.
     user: borg
-    # the master needs to know where the repos are located
-    archive_base: /local/dir/on/backup/host
+
+    # the master needs to know where the repos are located (e.g. /srv/borg-repos)
+    archive_base: /srv/borg-repos
+
     # all repos will be created if not present
     repos:
+
         # reponame will be appended to borg:archive_base
         # must be equal to the minion host borg:reponame value
         # required
       - reponame: host1
+
         # the repo will be initialised using this passphrase (via -e switch)
         # Default if not set: 'none'
         passphrase: foobar
+
+        # configure which ssh pubkeys are allowed to access the repo
         pubkeys:
           - pubkey: minion_ssh_pubkey_here
             # comment is optional
@@ -54,6 +65,8 @@ borg:
           - pubkey: yet_another_minion_ssh_pubkey_here
             enc: ssh-rsa
             delete: True
+
+  # override some defaults
   # see borg/defaults.yaml for full documentation
   lookup:
     pkg: borgbackup
