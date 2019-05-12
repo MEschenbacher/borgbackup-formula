@@ -8,10 +8,4 @@ export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
 export BORG_PASSPHRASE={{borg.get('passphrase', '')}}
 
-borg check :: \
-{%- if borg.check.get('last') %}
-	--last {{borg.check.last}} \
-{%- endif %}
-	|| exit $?
-
-exit $?
+borg "$@" || exit $?

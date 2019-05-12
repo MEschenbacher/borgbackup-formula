@@ -3,19 +3,23 @@
 borg:
   pkg: borgbackup
   cronic_pkg: cronic
-  # the first percent symbol must be escaped otherwise everything afterwards
-  # will be given as input on stdin by the cron daemon
-  cron_command: bash -c 'sleep $(( ( RANDOM \% 120 ) + 0 ))m ; cronic /root/borgbackup.sh'
-  cron_minute: 5
-  cron_hour: 4
-  cron_dayweek: 1-6
-  cron_enabled: True
-  cron_check_command: bash -c 'sleep $(( ( RANDOM \% 120 ) + 0 ))m; cronic /root/borgbackup.sh; cronic /root/borgcheck.sh'
-  cron_check_minute: 5
-  cron_check_hour: 4
-  # sunday
-  cron_check_dayweek: 0
-  cron_check_enabled: True
+  cron:
+    # the first percent symbol must be escaped otherwise everything afterwards
+    # will be given as input on stdin by the cron daemon
+    - command: bash -c 'sleep $(( ( RANDOM \% 120 ) + 0 ))m ; cronic /root/borgbackup.sh'
+      identifier: borgbackup
+      minute: 5
+      hour: 4
+      dayweek: 1-6
+      enabled: True
+    - command: >
+        bash -c 'sleep $(( ( RANDOM \% 120 ) + 0 ))m; cronic /root/borgbackup.sh; cronic /root/borgwrapper.sh check :: --last 7'
+      identifier: borgcheck
+      minute: 5
+      hour: 4
+      # sunday
+      dayweek: 0
+      enabled: True
   # the default list backup directories
   # include / but exclude directories which are not neccessary
   default_include:
@@ -40,5 +44,3 @@ borg:
     - '/**/.ccache'
     - /var/cache
     - /var/tmp
-  check:
-    last: 3

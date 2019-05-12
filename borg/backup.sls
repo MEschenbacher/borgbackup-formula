@@ -3,26 +3,39 @@
 include:
   - borg.init
 
-/root/borgbackup.sh:
+borgbackup.sh script:
   file.managed:
+    - name: /root/borgbackup.sh
     - source: salt://borg/files/borgbackup.sh
     - template: jinja
     - user: root
     - group: root
     - mode: 700 # script includes a password
 
-{% if borg.cron_enabled %}
-borg-backup-cron:
-  cron.present:
-    - identifier: borgbackup
-    - name: {{ borg.cron_command }}
+borgwrapper.sh script:
+  file.managed:
+    - name: /root/borgwrapper.sh
+    - source: salt://borg/files/borgwrapper.sh
+    - template: jinja
     - user: root
-    - minute: {{ borg.cron_minute }}
-    - hour: {{ borg.cron_hour }}
-    - dayweek: {{ borg.cron_dayweek }}
+    - group: root
+    - mode: 700 # script includes a password
+
+{% for entry in borg.cron %}
+{% if entry.enabled %}
+cron {{entry.identifier}}:
+  cron.present:
+    - identifier: {{entry.identifier}}
+    - name: >
+        {{entry.command}}
+    - user: root
+    - minute: {{entry.minute}}
+    - hour: {{entry.hour}}
+    - dayweek: {{entry.dayweek}}
     - comment: Create a borg backup
 {% else %}
-disable-borg-backup-cron:
+disable cron {{entry.identifier}}:
   cron.absent:
-    - identifier: borgbackup
+    - identifier: {{entry.command}}
 {% endif %}
+{% endfor %}

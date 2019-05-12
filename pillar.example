@@ -1,5 +1,6 @@
 borg:
   # clients need to know where they are supposed to push backup to
+  # path to folder without the actual repository folder
   archive_base: ssh://borguser@backuphost.example.org/local/dir/on/backup/host
   # use your own archive naming pattern. Default is {hostname}-{now}
   archive_name: '{hostname}-{now}'
@@ -23,7 +24,7 @@ borg:
 
   # configure for master
   master:
-    # the user for which ssh keys are installed and which runs `borg server` as
+    # the user for which ssh keys are installed and which runs `borg serve` as
     # receiver. Required.
     user: borg
     # the master needs to know where the repos are located

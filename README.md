@@ -7,9 +7,8 @@ backups to a master. Borg supports backups on local filesystems and remote hosts
 via ssh. This formula requires ssh keys to be used when connecting to a remote
 host via ssh.
 
-Both states `borg.backup` and `borg.check` are supposed to be activated. With the default
-configuration borg will backup every night, except on sundays where a backup plus a borg check
-will be done.
+With the default configuration borg will backup every night, except on sundays where a backup
+plus a borg check of the last 7 snapshots will be done.
 
 # Requirements
 
@@ -30,7 +29,7 @@ Configuration is done via pillar. See `example.pillar` for examples.
 # States
 
   - `borg.backup` Installs borgbackup, sets up `borgbackup.sh` and
-    `borgcheck.sh`. **Important**: Run `/root/borgbackup.sh` once manually
+    `borgwrapper.sh`. **Important**: Run `/root/borgbackup.sh` once manually
     because ssh needs to verify the host and asks you to accept the hostkey.
   - `borg.master` Installs borgbackup, sets up repositories and sets up
     `authorized_keys`
