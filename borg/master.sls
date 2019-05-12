@@ -28,7 +28,7 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
     - comment: {{pubkeyentry.get('comment')}}
     {% endif %}
     - options:
-      - command="cd {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}; borg serve --append-only --restrict-to-path {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}"
+      - command="cd {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}; borg serve --append-only --restrict-to-path {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}"
       - no-port-forwarding
       - no-X11-forwarding
       - no-pty
@@ -39,11 +39,11 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
 create borg repo {{entry.get('reponame')}}:
   cmd.run:
 {% if entry.get('passphrase', 'none') == 'none' %}
-    - name: borg init -e none {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}
+    - name: borg init -e none {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}
 {% else %}
-    - name: BORG_PASSPHRASE={{entry.get('passphrase')}} borg init -e repokey {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}
+    - name: BORG_PASSPHRASE={{entry.get('passphrase')}} borg init -e repokey {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}
 {% endif %}
     - runas: {{salt.pillar.get('borg:master:user')}}
     - creates:
-      - {{salt.pillar.get('borg:master:archive_base')}}{{entry.get('reponame')}}
+      - {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}
 {% endfor %}
