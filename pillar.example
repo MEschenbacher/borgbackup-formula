@@ -2,7 +2,7 @@ borg:
 
   # clients need to know where they are supposed to push backup to
   # path to folder without the actual repository folder (e.g. /srv/borg-repos)
-  archive_base: ssh://borguser@backuphost.example.org/local/dir/on/backup/host
+  archive_base: ssh://borguser@backuphost.example.org/srv/borg-repos
 
   # the last part of the repo name
   # if unset, $HOSTNAME will be used
@@ -34,10 +34,11 @@ borg:
   master:
 
     # the user for which ssh keys are installed and which runs `borg serve` as
-    # receiver. Required.
+    # receiver. Will be created if it doesn't exist. Required.
     user: borg
 
     # the master needs to know where the repos are located (e.g. /srv/borg-repos)
+    # will be created if it doesn't exist. Required.
     archive_base: /srv/borg-repos
 
     # all repos will be created if not present
@@ -48,15 +49,12 @@ borg:
         # required
       - reponame: host1
 
-        # will be supplied via environment variable BORG_PASSPHRASE if set
+        # will be exported via environment variable BORG_PASSPHRASE if set
         passphrase: foobar
 
         # exposes options which can be passed to borg on repository creation
-        # to be supplied without the prefix --
         init_options:
-          # default: none, for a list of all modes, see borg-init(1) "Encryption modes"
           - '--encryption=repokey'
-          # the special value noarg indicates no option and only --key
           - '--append-only'
           - '--storage-quota=1.5T'
           - '--make-parent-dirs'
@@ -84,3 +82,8 @@ borg:
   lookup:
     pkg: borgbackup
     cronic_pkg: cronic
+    default_include:
+      - /mnt
+      - /home
+      - /var
+    default_exclude: []
