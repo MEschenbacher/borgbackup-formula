@@ -44,7 +44,7 @@ borg:
         # required
       - reponame: host1
 
-        # will be supplied via environment variable BORG_PASSPHRASE
+        # will be supplied via environment variable BORG_PASSPHRASE if set
         passphrase: foobar
 
         # exposes options which can be passed to borg on repository creation
