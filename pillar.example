@@ -44,9 +44,18 @@ borg:
         # required
       - reponame: host1
 
-        # the repo will be initialised using this passphrase (via -e switch)
-        # Default if not set: 'none'
+        # will be supplied via environment variable BORG_PASSPHRASE
         passphrase: foobar
+
+        # exposes options which can be passed to borg on repository creation
+        # to be supplied without the prefix --
+        init_options:
+          # default: none, for a list of all modes, see borg-init(1) "Encryption modes"
+          - '--encryption=repokey'
+	  # the special value noarg indicates no option and only --key
+          - '--append-only'
+          - '--storage-quota=1.5T'
+          - '--make-parent-dirs'
 
         # configure which ssh pubkeys are allowed to access the repo
         pubkeys:
