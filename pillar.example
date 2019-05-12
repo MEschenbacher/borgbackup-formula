@@ -26,6 +26,10 @@ borg:
     - /another/path
     - '/tmp/*' # pattern
 
+  # / is already included in default_include
+  include:
+    - /
+
   # configure for master
   master:
 
@@ -52,7 +56,7 @@ borg:
         init_options:
           # default: none, for a list of all modes, see borg-init(1) "Encryption modes"
           - '--encryption=repokey'
-	  # the special value noarg indicates no option and only --key
+          # the special value noarg indicates no option and only --key
           - '--append-only'
           - '--storage-quota=1.5T'
           - '--make-parent-dirs'
