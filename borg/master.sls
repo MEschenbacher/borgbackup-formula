@@ -29,11 +29,7 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
     {% endif %}
     - options:
       - command="cd {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}; borg serve --append-only --restrict-to-path {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}"
-      - no-port-forwarding
-      - no-X11-forwarding
-      - no-pty
-      - no-agent-forwarding
-      - no-user-rc
+      - restrict
 {% endfor %}
 
 {% set create_command = '' %}
