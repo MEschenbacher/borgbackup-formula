@@ -8,7 +8,7 @@ export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
 export BORG_PASSPHRASE={{borg.get('passphrase', '')}}
 
-borg create '::{{borg.get('archive_name', '{hostname}-{now}')}}' \
+borg create '::{{borg.get('archive_name', '{hostname}-{now:%Y-%m-%dT%H-%M}')}}' \
 {%- for path in borg.default_include %}
     '{{path}}' \
 {%- endfor %}
