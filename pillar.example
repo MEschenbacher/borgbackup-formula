@@ -13,14 +13,15 @@ borg:
   # expanded by borg) archive_name: '{hostname}-{now:%Y-%m-%dT%H-%M}'
 
   # if unset, no passphrase will be used
-  passphrase: abc
+  # passphrase: abc
 
   # exclude paths and pattern from borg create
   # on the master, make sure to exclude the master_archive_base by including it
   # in this list
-  # Attention: by default, borg/defaults.yaml already includes a default_exclude list and a
-  # default_include list which backs up / but excludes a few directories e.g. /dev /proc /sys
-  # /tmp etc. look at them and verify correctness
+  # Attention: by default, borg/defaults.yaml already includes a default_exclude
+  # list and a default_include list which backs up / but excludes a few
+  # directories e.g. /dev /proc /sys /tmp etc. look at them and verify
+  # correctness
   exclude:
     - /path/to/ignore
     - /another/path
@@ -50,28 +51,30 @@ borg:
       - reponame: host1
 
         # will be exported via environment variable BORG_PASSPHRASE if set
-        passphrase: foobar
+        # if a passphrase is set, you must also set a corresponding init_option
+        # for borg to set up encryption/authentication. Default: unset
+        # passphrase: foobar
 
         # exposes options which can be passed to borg on repository creation
         init_options:
-          - '--encryption=repokey'
           - '--append-only'
-          - '--storage-quota=1.5T'
           - '--make-parent-dirs'
+          #- '--encryption=repokey'
+          #- '--storage-quota=1.5T'
 
         # configure which ssh pubkeys are allowed to access the repo
         pubkeys:
           - pubkey: minion_ssh_pubkey_here
             # comment is optional
             comment: root@minion1
-            # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
-            # docs). Defaults to ssh-ed25519
+            # enc can be ssh-rsa, etc (see ssh_auth.present states in the
+            # official docs). Defaults to ssh-ed25519
             enc: ssh-ed25519
           - pubkey: another_minion_ssh_pubkey_here
             # comment is optional
             # comment: root@minion2
-            # enc can be ssh-rsa, etc (see ssh_auth.present states in the official
-            # docs). Defaults to ssh-ed25519
+            # enc can be ssh-rsa, etc (see state.ssh_auth.present states in the
+            # official salt docs). Defaults to ssh-ed25519
             enc: ssh-rsa
           - pubkey: yet_another_minion_ssh_pubkey_here
             enc: ssh-rsa
@@ -82,8 +85,8 @@ borg:
   lookup:
     pkg: borgbackup
     cronic_pkg: cronic
-    default_include:
-      - /mnt
-      - /home
-      - /var
-    default_exclude: []
+    #default_include:
+    #  - /mnt
+    #  - /home
+    #  - /var
+    #default_exclude: []
