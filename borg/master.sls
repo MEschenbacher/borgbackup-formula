@@ -34,9 +34,10 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
 
 {% set create_command = '' %}
 {% if entry.get('passphrase') %}
-{% set create_command = create_command ~ 'BORG_PASSPHRASE=' ~ entry.passphrase ~ ' ' %}
+  {% set create_command = create_command ~ 'BORG_PASSPHRASE=' ~ entry.passphrase ~ ' borg init' %}
+{% else %}
+  {% set create_command = create_command ~ 'borg init --encryption=none' %}
 {% endif %}
-{% set create_command = create_command ~ 'borg init ' %}
 
 create borg repo {{entry.get('reponame')}}:
   cmd.run:

@@ -50,9 +50,10 @@ borg:
         # required
       - reponame: host1
 
-        # will be exported via environment variable BORG_PASSPHRASE if set
-        # if a passphrase is set, you must also set a corresponding init_option
-        # for borg to set up encryption/authentication. Default: unset
+        # will be exported via environment variable BORG_PASSPHRASE if set if a
+        # passphrase is set, you must also set a corresponding init_option for
+        # borg to set up encryption/authentication. If unset, no encryption and
+        # authentication will take place. Default: unset
         # passphrase: foobar
 
         # exposes options which can be passed to borg on repository creation
