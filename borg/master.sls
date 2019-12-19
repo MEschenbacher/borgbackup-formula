@@ -13,6 +13,7 @@ create directory for borgbackup:
     - makedirs: True
 
 {% for entry in salt.pillar.get('borg:master:repos', []) %}
+{% set repopath = salt.pillar.get('borg:master:archive_base') ~ '/' ~ entry.get('reponame') %}
 {% for pubkeyentry in entry.get('pubkeys', []) %}
 {% if pubkeyentry.get('delete', False) %}
 remove borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}} and user {{salt.pillar.get('borg:master:user')}}:
@@ -28,7 +29,7 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
     - comment: {{pubkeyentry.get('comment')}}
     {% endif %}
     - options:
-      - command="cd {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}; borg serve --append-only --restrict-to-path {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}"
+      - command="cd {{repopath}}; borg serve --append-only --restrict-to-path {{repopath}}"
       - restrict
 {% endfor %}
 
@@ -46,8 +47,8 @@ create borg repo {{entry.get('reponame')}}:
         {%- for o in entry.get('init_options', []) %}
         {{o}}
         {%- endfor %}
-        {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}
+        {{repopath}}
     - runas: {{salt.pillar.get('borg:master:user')}}
     - creates:
-      - {{salt.pillar.get('borg:master:archive_base')}}/{{entry.get('reponame')}}
+      - {{repopath}}
 {% endfor %}
