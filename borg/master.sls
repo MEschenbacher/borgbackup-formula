@@ -29,7 +29,7 @@ borg backup key {{pubkeyentry.get('pubkey')}} for repo {{entry.get('reponame')}}
     - comment: {{pubkeyentry.get('comment')}}
     {% endif %}
     - options:
-      - command="cd {{repopath}}; borg serve --append-only --restrict-to-path {{repopath}}"
+      - command="borg serve --append-only --restrict-to-repository {{repopath}}"
       - restrict
 {% endfor %}
 
