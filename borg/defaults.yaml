@@ -44,3 +44,4 @@ borg:
     - '/**/.ccache'
     - /var/cache
     - /var/tmp
+    - /var/lib/apt/lists
