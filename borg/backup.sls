@@ -36,6 +36,6 @@ cron {{entry.identifier}}:
 {% else %}
 disable cron {{entry.identifier}}:
   cron.absent:
-    - identifier: {{entry.command}}
+    - identifier: {{entry.identifier}}
 {% endif %}
 {% endfor %}
